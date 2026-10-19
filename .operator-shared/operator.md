@@ -30,6 +30,7 @@ Runtime code uses portable Node APIs. Bun owns workspace management, dependency 
   - This command will report formatting errors but also automatically format files. Only fix linting errors; formatting is automatically applied.
 - Use `<type>(<area>): <summary>` for development commit messages, for example `feat(pi): add preamble injection`.
 - Name development branches `<type>/<short-kebab-description>` (for example `fix/opencode-v2-status`), matching the repository's PR branch convention. Use the relevant change type such as `fix`, `feat`, `docs`, or `chore`.
+- When indexing via `/operator:index` during feature or adapter development, scope the index changes strictly to the files and subindexes of the active feature/adapter unless the user explicitly requests a full repository pass.
 
 ## Code Style
 

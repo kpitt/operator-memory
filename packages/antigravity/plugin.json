@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "operator",
+  "version": "0.1.0",
+  "description": "Durable project and user memory for agent-driven development in Antigravity CLI.",
+  "author": {
+    "name": "Aerovato Research",
+    "url": "https://github.com/aerovato"
+  },
+  "repository": "https://github.com/aerovato/operator-memory",
+  "license": "BSD-3-Clause"
+}

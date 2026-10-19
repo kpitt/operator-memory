@@ -17,12 +17,13 @@ read_if: Working anywhere in the committed Operator Memory project
 
 - Operator Memory is a Bun and TypeScript monorepo for durable context and agent-driven development on coding-agent harnesses.
 - The read-only core runtime supplies shared models and preamble rendering, the helper CLI owns harness installation plus deterministic setup and validation, and thin harness adapters bind those capabilities. Unqualified OpenCode means V2; V1 remains explicitly legacy without renaming its package or source directory.
-- The workspace, core runtime, preamble renderer, helper CLI, OpenCode integration, Pi integration, Codex plugin packaging, DeepSeek Harness adapter, Claude Code adapter, and Helper-managed Kiro installation are implemented.
+- The workspace, core runtime, preamble renderer, helper CLI, OpenCode integration, Pi integration, Codex plugin packaging, DeepSeek Harness adapter, Claude Code adapter, Antigravity adapter, and Helper-managed Kiro installation are implemented.
 
 ## Project Index
 
 ### `packages/` - Workspace packages
 
+- [`antigravity/`](antigravity.md) - Antigravity plugin package with `SessionStart` hook preamble injection and Operator workflow skills.
 - [`claude-code/`](claude-code.md) - Claude Code mod adapter with Helper-rendered main-agent and subagent preamble injection.
 - [`core/`](core.md) - Private harness-agnostic runtime for memory loading, shared models, and preamble generation.
 - [`codex/`](codex.md) - Codex plugin package installed through the repository Git marketplace and npm.
@@ -67,6 +68,7 @@ Indexed by subindexes under `index/harnesses/`; clone the upstream repository to
 - `.githooks/pre-commit` - Repository hook that reports quality checks and fixes formatting failures.
 - `.githooks/commit-msg` - Commit-message hook requiring an area for `feat` commits.
 - `scripts/check.sh` - Full-workspace or package-scoped validation runner.
+- `scripts/install-antigravity.ts` - Globally installs the built local Antigravity package via `agy plugin install` using its absolute package-root path.
 - `scripts/install-opencode.ts`, `scripts/install-opencode.test.ts` - Self-contained V2 development build and Helper linking, global JSONC-preserving local-directory registration, and installation coverage.
 - `scripts/install-pi.ts` - Persistently registers the built local Pi package through its absolute package-root path.
 - `scripts/preview-codex.ts`, `scripts/preview-codex.test.ts` - Self-contained local Codex preview: builds and links Helper, builds the plugin package, then generates/registers a separate local marketplace and installs or refreshes the local `aerovato@operator-local` plugin.
