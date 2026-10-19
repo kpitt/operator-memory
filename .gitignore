@@ -12,6 +12,7 @@ __pycache__/
 
 # Build and package output
 packages/claude-code/hooks/register.js
+packages/antigravity/hooks/
 dist/
 coverage/
 *.lcov

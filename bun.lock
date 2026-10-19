@@ -17,6 +17,10 @@
         "vitest": "^4.1.10",
       },
     },
+    "packages/antigravity": {
+      "name": "@aerovato/operator-antigravity",
+      "version": "0.1.0",
+    },
     "packages/claude-code": {
       "name": "@aerovato/operator-claude-code",
       "version": "0.1.0",
@@ -143,6 +147,8 @@
     },
   },
   "packages": {
+    "@aerovato/operator-antigravity": ["@aerovato/operator-antigravity@workspace:packages/antigravity"],
+
     "@aerovato/operator-claude-code": ["@aerovato/operator-claude-code@workspace:packages/claude-code"],
 
     "@aerovato/operator-codex": ["@aerovato/operator-codex@workspace:packages/codex"],
