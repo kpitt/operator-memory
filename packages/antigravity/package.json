@@ -1,0 +1,39 @@
+{
+  "name": "@aerovato/operator-antigravity",
+  "version": "0.1.0",
+  "description": "Operator Memory adapter for Antigravity.",
+  "license": "BSD-3-Clause",
+  "author": "Aerovato Research",
+  "homepage": "https://github.com/aerovato/operator-memory#readme",
+  "bugs": {
+    "url": "https://github.com/aerovato/operator-memory/issues"
+  },
+  "files": [
+    "plugin.json",
+    "hooks.json",
+    "hooks",
+    "skills"
+  ],
+  "keywords": [
+    "antigravity",
+    "antigravity-plugin",
+    "memory",
+    "plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aerovato/operator-memory.git",
+    "directory": "packages/antigravity"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "bun ./scripts/build.ts",
+    "prepack": "bun run build"
+  },
+  "type": "module"
+}
