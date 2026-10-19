@@ -1,28 +1,34 @@
 ### Antigravity Preamble Injection
 
-Last Updated: October 11, 2026
+Last Updated: October 19, 2026
 
-The native application API injects conversation steps through command hooks, not an exposed outgoing-system-prompt transform. See [Hooks](./hooks.md) for protocol/runtime and [Delegation](./delegation.md) for child coverage. Size/lifetime observations are from Linux ARM64 CLI `1.3.1`/`1.3.3`, not guarantees for every surface or arbitrary payload size.
+The native application API injects conversation steps through command hooks, not an exposed outgoing-system-prompt transform. See [Hooks](./hooks.md) for protocol/runtime and [Delegation](./delegation.md) for child coverage. Size/lifetime observations are from Linux ARM64 CLI `1.3.1`/`1.3.3` and CLI `1.4.0`, not guarantees for every surface or arbitrary payload size.
 
 #### Resolution and Message Placement
 
 Operator's [Helper-subprocess pathway](../../specs/reference/implementation.md#preamble-resolution) obtains one complete `operator-helper preamble` output for the resolved project root. Output is either the normal preamble or canonical all-or-nothing diagnostic. Preserve it unchanged; do not reconstruct partitions, truncate the Brain, or inject substitutes.
 
-Encode the output inside a native hook response:
+On CLI `1.4.0` and later, encode the output as a `systemMessage` step in the `SessionStart` hook's `injectSteps` response:
 
 ```json
 {
   "injectSteps": [
-    { "userMessage": "Complete unchanged Helper output" }
+    {
+      "systemMessage": {
+        "systemMessage": "Complete unchanged Helper output"
+      }
+    }
   ]
 }
 ```
 
-Observed trajectory order is existing history, current user/tool step, injected steps, then model response. No prepend operation or insertion index is documented. Once-only user injection stays near the beginning of retained history, after the initial prompt; repeated injection lands at the current tail. `SYSTEM_SDK` identifies the injection source, not a provider system role. **Provider placement and prompt-cache reuse are unverified.** Caching rendered text locally does not create a stable provider system prefix.
+In `PreInvocation` on earlier CLI builds (`1.3.1`/`1.3.3`), observed trajectory order is existing history, current user/tool step, injected steps, then model response. No prepend operation or insertion index is documented. Once-only user injection stays near the beginning of retained history, after the initial prompt; repeated injection lands at the current tail. `SYSTEM_SDK` identifies the injection source, not a provider system role. **Provider placement and prompt-cache reuse are unverified.** Caching rendered text locally does not create a stable provider system prefix.
 
 #### Message Types and Lifetime
 
-`userMessage` persists as native `USER_INPUT`, wrapped in `<USER_REQUEST>`/metadata, and increments user-turn accounting. A once-per-conversation binding can inject through the first PreInvocation and return `{}` on ordinary later calls. Guard with conversation identity, not the resetting invocation counter; see [Conversation Identity](./hooks.md#conversation-identity).
+`systemMessage` (`{ "systemMessage": { "systemMessage": string } }`) injected via `SessionStart` (added in CLI `1.4.0`) remains in the system instructions for the entire session, even after compaction. Running `/clear` starts a new session and reruns the `SessionStart` event to inject the preamble into the new session context.
+
+`userMessage` persists as native `USER_INPUT`, wrapped in `<USER_REQUEST>`/metadata, and increments user-turn accounting. A once-per-conversation `PreInvocation` binding can inject through the first PreInvocation and return `{}` on ordinary later calls. Guard with conversation identity, not the resetting invocation counter; see [Conversation Identity](./hooks.md#conversation-identity).
 
 `ephemeralMessage` is documented as transient system content and is stored as native `EPHEMERAL_MESSAGE`. **Disk persistence does not imply later model-context retention.** On tested later user turns without reinjection, previously supplied ephemeral identifiers were unavailable; reinjecting identical content restored access. This supports transient model availability across those user turns. Tool-continuation, retry, and compaction lifetime are not established.
 
@@ -38,11 +44,13 @@ Static rules are not equivalent to hook injection. Rules have a 24,000-byte per-
 
 #### Compaction and Restoration
 
-Automatic compaction can replace the full injected user preamble in active context with a checkpoint containing only an extract/summary. Original complete history remaining on disk does not mean the model still receives it. CLI `1.3.3` has no `/compact` command.
+Messages injected with `systemMessage` via `SessionStart` (CLI `1.4.0`) remain in the system instructions for the entire session, even after compaction, avoiding history-checkpoint loss.
+
+For `userMessage` injection via `PreInvocation`, automatic compaction can replace the full injected user preamble in active context with a checkpoint containing only an extract/summary. Original complete history remaining on disk does not mean the model still receives it. CLI `1.3.3` has no `/compact` command.
 
 The supplied `transcriptPath` exposes new `CHECKPOINT` steps. A hook can detect a new checkpoint and restore the complete cached preamble as `userMessage` once for that checkpoint. PostInvocation restoration protects subsequent calls; resume-time PreInvocation can handle a checkpoint already present. Ordinary later callbacks must not restore again.
 
-**The first model invocation after automatic compaction can lack the complete preamble.** At the observed boundary, PreInvocation ran before the checkpoint existed, and PostInvocation saw it only after the compacted model response had completed. That response may include tool calls. No native PostCompact-before-model seam is documented.
+**With `userMessage` injection, the first model invocation after automatic compaction can lack the complete preamble.** At the observed boundary, PreInvocation ran before the checkpoint existed, and PostInvocation saw it only after the compacted model response had completed. That response may include tool calls. No native PostCompact-before-model seam is documented.
 
 A true non-persisted outgoing-context transform applied after compaction could avoid dependence on retained history, but the native plugin API exposes no equivalent. Returning constant chunks from the same PreInvocation hook does not create that transform. Repeated ephemeral injection is not an established bypass for the compaction-producing invocation.
 
