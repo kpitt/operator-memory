@@ -64,7 +64,7 @@ Indexed by subindexes under `index/harnesses/`; clone the upstream repository to
 - `docs/assets/change-the-loop.png` - README agent-loop promo graphic.
 - `LICENSE` - BSD 3-Clause repository license.
 - `.github/workflows/ci.yml` - Frozen-install workspace quality checks.
-- `.github/workflows/publish-helper.yml`, `.github/workflows/publish-opencode-v2.yml`, `.github/workflows/publish-pi.yml`, `.github/workflows/publish-codex.yml`, `.github/workflows/publish-claude-code.yml`, `.github/workflows/publish-deepseek.yml` - Independent tag-driven npm provenance publishing and GitHub releases.
+- `.github/workflows/publish-helper.yml`, `.github/workflows/publish-opencode-v2.yml`, `.github/workflows/publish-pi.yml`, `.github/workflows/publish-codex.yml`, `.github/workflows/publish-claude-code.yml`, `.github/workflows/publish-deepseek.yml`, `.github/workflows/publish-antigravity.yml` - Independent tag-driven npm provenance publishing and GitHub releases.
 - `.githooks/pre-commit` - Repository hook that reports quality checks and fixes formatting failures.
 - `.githooks/commit-msg` - Commit-message hook requiring an area for `feat` commits.
 - `scripts/check.sh` - Full-workspace or package-scoped validation runner.
@@ -73,7 +73,7 @@ Indexed by subindexes under `index/harnesses/`; clone the upstream repository to
 - `scripts/install-pi.ts` - Persistently registers the built local Pi package through its absolute package-root path.
 - `scripts/preview-codex.ts`, `scripts/preview-codex.test.ts` - Self-contained local Codex preview: builds and links Helper, builds the plugin package, then generates/registers a separate local marketplace and installs or refreshes the local `aerovato@operator-local` plugin.
 - `scripts/preview-claude-code.ts` - Builds and links Helper, builds the Claude Code adapter, and launches Claude with the local package through `--plugin-dir`.
-- `scripts/publish-helper.sh`, `scripts/publish-opencode-v2.sh`, `scripts/publish-pi.sh`, `scripts/publish-codex.sh`, `scripts/publish-claude-code.sh`, `scripts/publish-deepseek.sh` - Preflight-validated package check, build, version, lockfile, commit, tag, and atomic push release automation; accepts semantic bump names, `X.Y.Z`, or `vX.Y.Z`. Claude Code synchronizes its plugin manifest version; Codex synchronizes its plugin manifest and public marketplace version.
+- `scripts/publish-helper.sh`, `scripts/publish-opencode-v2.sh`, `scripts/publish-pi.sh`, `scripts/publish-codex.sh`, `scripts/publish-claude-code.sh`, `scripts/publish-deepseek.sh`, `scripts/publish-antigravity.sh` - Preflight-validated package check, build, version, lockfile, commit, tag, and atomic push release automation; accepts semantic bump names, `X.Y.Z`, or `vX.Y.Z`. Claude Code synchronizes its plugin manifest version; Codex synchronizes its plugin manifest and public marketplace version.
 - `scripts/sync-codex-version.ts`, `scripts/sync-codex-version.test.ts` - Synchronize the Codex plugin manifest and public marketplace npm version from the package version during release preparation.
 - `scripts/resolve-publish-version.sh`, `scripts/resolve-publish-version.test.ts` - Shared semantic bump resolution and focused validation coverage for package releases.
 - `scripts/publish-all.ts`, `scripts/publish-all.test.ts` - Bun-shell six-package publishing through one version commit and PR and individual same-commit tags, Helper last; existing CI workflows validate and publish.
