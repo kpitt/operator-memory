@@ -67,5 +67,6 @@ Marketplace automatic synchronization is documented for Antigravity 2.0. No auto
 
 #### Sources
 
+- Local CLI customization documentation: `~/.gemini/antigravity-cli/builtin/skills/agy-customizations/docs/plugins.md`.
 - [Plugins](https://antigravity.google/docs/plugins), [Marketplace](https://antigravity.google/docs/marketplace), [Skills](https://antigravity.google/docs/skills), [Headless](https://antigravity.google/docs/cli/headless).
 - [Pinned CLI release notes](https://github.com/google-antigravity/antigravity-cli/blob/800852ea61796e9fe53077a2f945e74daacb4be6/CHANGELOG.md).

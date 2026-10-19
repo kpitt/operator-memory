@@ -1,6 +1,6 @@
 ### Antigravity Native Integration Guide
 
-Last Updated: October 11, 2026
+Last Updated: October 28, 2026
 
 Reference for Google's native Antigravity application plugin API, not the Python SDK or an implemented Operator adapter. Antigravity 2.0 is the graphical project/orchestration application; CLI `agy` exposes the shared agent engine in a terminal; IDE is the standalone editor surface. Discovery and application-data paths differ by surface.
 
@@ -14,17 +14,18 @@ Reference for Google's native Antigravity application plugin API, not the Python
 
 #### Capabilities and Limitations
 
-Native hooks can inject complete user-message payloads and chunked ephemeral messages. Explicit namespaced skills support native autonomous suppression. CLI local installation/replacement preserves disabled state. Ordinary inherited children, nesting, and idle wakeups receive workspace-plugin hooks.
+The `SessionStart` event has been defined since Antigravity CLI replaced Gemini CLI, but exhibited issues and inconsistencies in earlier releases; proper operation is confirmed in Antigravity CLI `1.4.x` testing. Its `injectSteps` response supports `systemMessage` steps that remain in the system instructions for the entire session, even after compaction, and reruns on `/clear`. Native hooks can also inject complete user-message payloads and chunked ephemeral messages. Explicit namespaced skills support native autonomous suppression. CLI local installation/replacement preserves disabled state. Ordinary inherited children, nesting, and idle wakeups receive workspace-plugin hooks.
 
-No native prepend/context transform, pre-model abort, or post-compaction-before-model seam is documented. Injected steps follow the current user/tool step. Compaction restoration protects subsequent calls, not the first compacted response. Dynamic agents lack hooks in the tested pathway; multi-root hook metadata does not identify the launch root. CLI failure reporting is diagnostic-log-only in tests, while graphical native error reporting is documented. Provider prompt-cache reuse and Windows/graphical runtime support are not established.
+No native prepend/context transform, pre-model abort, or post-compaction-before-model seam is documented. For `PreInvocation` `userMessage` steps, injected steps follow the current user/tool step and compaction restoration protects subsequent calls, not the first compacted response. Dynamic agents lack hooks in the tested pathway; multi-root hook metadata does not identify the launch root. CLI failure reporting is diagnostic-log-only in tests, while graphical native error reporting is documented. Provider prompt-cache reuse and Windows/graphical runtime support are not established.
 
 #### Reading Evidence and Documentation
 
-Guide bodies state behavior and bounded constraints; their Verification Notes contain supporting experiment details. Runtime observations cover authenticated Linux ARM64 CLI `1.3.1`/`1.3.3`. Native transcript comparisons and model controls establish the stated cases, not exact provider-wire bytes or universal worker coverage.
+Guide bodies state behavior and bounded constraints; their Verification Notes contain supporting experiment details. Runtime observations cover authenticated Linux ARM64 CLI `1.3.1`/`1.3.3` and CLI `1.4.x`. Native transcript comparisons and model controls establish the stated cases, not exact provider-wire bytes or universal worker coverage.
 
-Read all native surface tabs on Google's pages: rendered Markdown can omit inactive CLI/IDE panels, whose content remains in HTML. Release notes supersede several reference-page claims; tested executable versions take precedence over the web changelog's latest label. The official CLI repository publishes release notes, not the native engine source; it is not a source-level validation target.
+Official online documentation (`https://antigravity.google/docs/hooks/`, `https://antigravity.google/docs/plugins/`) is not completely accurate or up to date, particularly regarding lifecycle hooks. More precise and accurate documentation is installed locally alongside the CLI under `~/.gemini/antigravity-cli/builtin/skills/agy-customizations/docs/*.md` (notably `hooks.md`), which updates with each `agy` release and serves as the authoritative specification for `SessionStart` and `injectSteps`. Read all native surface tabs on Google's pages: rendered Markdown can omit inactive CLI/IDE panels, whose content remains in HTML. Release notes supersede several reference-page claims; tested executable versions take precedence over the web changelog's latest label. The official CLI repository publishes release notes, not the native engine source; it is not a source-level validation target.
 
 #### Sources
 
 - [Documentation sitemap](https://antigravity.google/llms.txt), [Plugins](https://antigravity.google/docs/plugins), [Hooks](https://antigravity.google/docs/hooks), [Skills](https://antigravity.google/docs/skills), [Rules](https://antigravity.google/docs/rules), [Subagents](https://antigravity.google/docs/subagents).
+- Local CLI customization documentation: `~/.gemini/antigravity-cli/builtin/skills/agy-customizations/docs/` (`hooks.md`, `plugins.md`, `skills.md`).
 - [Projects](https://antigravity.google/docs/projects), [Settings](https://antigravity.google/docs/settings), [Marketplace](https://antigravity.google/docs/marketplace), [Graphical changelog](https://antigravity.google/docs/changelog), [pinned CLI release notes](https://github.com/google-antigravity/antigravity-cli/blob/800852ea61796e9fe53077a2f945e74daacb4be6/CHANGELOG.md).

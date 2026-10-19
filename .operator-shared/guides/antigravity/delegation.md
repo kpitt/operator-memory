@@ -1,12 +1,12 @@
 ### Antigravity Agents and Delegation
 
-Last Updated: October 11, 2026
+Last Updated: October 28, 2026
 
-Native `invoke_subagent` starts concurrent child conversations with dedicated prompts and roles. Coverage observations below apply to workspace-plugin hooks on Linux CLI `1.3.1`/`1.3.3`; they do not prove all global-plugin or internal-worker paths.
+Native `invoke_subagent` starts concurrent child conversations with dedicated prompts and roles. Coverage observations below apply to workspace-plugin hooks on Linux CLI `1.3.1`/`1.3.3` and CLI `1.4.x`; they do not prove all global-plugin or internal-worker paths.
 
 #### Child Context, Workspace, and Permissions
 
-Children **do not inherit the parent's conversation history**. Each has its own conversation UUID and needs direct context injection where hooks are available. Built-in `self` shares system instructions/toolsets, not proof of parent hook-message inheritance.
+Children **do not inherit the parent's conversation history**. Each has its own conversation UUID and needs direct context injection where hooks are available. Testing confirms that `SessionStart` fires at the start of each new subagent conversation, so the same `SessionStart` preamble injection automatically handles subagent initialization. Built-in `self` shares system instructions/toolsets, not proof of parent hook-message inheritance.
 
 Workspace modes are `inherit`, `branch` (worktree isolation), and `share` (documented directory sharing). CLI `1.3.3` fixes branch/share isolation in multi-repository projects; actual worktree-root behavior remains unverified. Private Brain files may be absent from isolated worktrees because they are ignored; do not substitute another checkout's Private Brain.
 
