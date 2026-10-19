@@ -1,8 +1,8 @@
 ### Antigravity Hook API and Runtime
 
-Last Updated: October 11, 2026
+Last Updated: October 19, 2026
 
-Native application hooks are shell commands exchanging JSON over stdin/stdout. This guide covers configuration, event contracts, runtime identity, and failures. See [Injection](./injection.md) for message placement, size, lifetime, and compaction. Runtime observations below apply to Linux ARM64 CLI `1.3.1`/`1.3.3`; graphical and Windows behavior is not established unless explicitly documented.
+Native application hooks are shell commands exchanging JSON over stdin/stdout. This guide covers configuration, event contracts, runtime identity, and failures. See [Injection](./injection.md) for message placement, size, lifetime, and compaction. Runtime observations below apply to Linux ARM64 CLI `1.3.1`/`1.3.3` and CLI `1.4.0`; graphical and Windows behavior is not established unless explicitly documented.
 
 #### Configuration and Discovery
 
@@ -13,8 +13,8 @@ The top level maps names directly to event configurations:
 ```json
 {
   "example-hook": {
-    "PreInvocation": [
-      { "type": "command", "command": "example-hook-command", "timeout": 30 }
+    "SessionStart": [
+      { "type": "command", "command": "example-hook-command", "timeout": 10 }
     ]
   }
 }
@@ -30,10 +30,11 @@ All events document `conversationId`, `workspacePaths` (absolute mounted directo
 
 ##### Invocation Events
 
-- `PreInvocation` runs before a model invocation; input adds `invocationNum` and `initialNumSteps`. Output supports optional `injectSteps`; each step may contain `ephemeralMessage`, `userMessage`, or `toolCall`.
+- `SessionStart` (added in CLI `1.4.0`) runs when a session starts (including after `/clear`); input contains only the common event fields (`conversationId`, `workspacePaths`, `transcriptPath`, `artifactDirectoryPath`, `modelName`). Output is the same `injectSteps` array returned by `PreInvocation`, supporting `systemMessage` (`{ "systemMessage": { "systemMessage": string } }`), `ephemeralMessage`, `userMessage`, or `toolCall`.
+- `PreInvocation` runs before a model invocation; input adds `invocationNum` and `initialNumSteps`. Output supports optional `injectSteps`; each step may contain `systemMessage`, `ephemeralMessage`, `userMessage`, or `toolCall`.
 - `PostInvocation` uses the same input and injected-step schema, after the model invocation. `terminationBehavior` accepts `force_continue`, `terminate`, or empty/omitted for default behavior. Termination here cannot prevent the model invocation already completed.
 
-No native shell `SessionStart`, `SubagentStart`, `PreCompact`, `PostCompact`, prompt-prepend, or outgoing-context replacement hook is documented. Python SDK events are a different API and must not be imported into `hooks.json`.
+No native shell `SubagentStart`, `PreCompact`, `PostCompact`, prompt-prepend, or outgoing-context replacement hook is documented. Python SDK events are a different API and must not be imported into `hooks.json`.
 
 ##### Tool Events
 
@@ -55,7 +56,7 @@ On tested Linux CLI, workspace-plugin hooks run from the plugin directory throug
 
 #### Conversation Identity
 
-Resume retains `conversationId`; `/clear` creates a new UUID. `invocationNum` increments across tool continuations within an execution but resets on later user executions and idle-child wakeups. **Invocation zero is not a once-per-conversation guard.** `initialNumSteps` increases with retained history.
+Resume retains `conversationId`; `/clear` starts a new session with a new UUID and reruns `SessionStart` to inject the preamble into the new session context. `invocationNum` increments across tool continuations within an execution but resets on later user executions and idle-child wakeups. **Invocation zero is not a once-per-conversation guard.** `initialNumSteps` increases with retained history.
 
 Each hook command is a fresh process. Persisted injection needs conversation-aware state for complete preamble bytes and handled checkpoints, with normal atomic-write/concurrency/privacy safeguards. `/add-dir` changes roots without changing UUID; do not reuse wrong-root bytes. Fork behavior is unverified, and turn-ending Stop does not establish safe final cache cleanup.
 
