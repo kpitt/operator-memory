@@ -1,6 +1,6 @@
 ### Antigravity Hook API and Runtime
 
-Last Updated: October 28, 2026
+Last Updated: November 4, 2026
 
 Native application hooks are shell commands exchanging JSON over stdin/stdout. This guide covers configuration, event contracts, runtime identity, and failures. See [Injection](./injection.md) for message placement, size, lifetime, and compaction. Runtime observations below apply to Linux ARM64 CLI `1.3.1`/`1.3.3` and CLI `1.4.x`; graphical and Windows behavior is not established unless explicitly documented. Official online documentation (`https://antigravity.google/docs/hooks/`) is not fully up to date or accurate for lifecycle hooks; authoritative documentation is bundled locally with the CLI under `~/.gemini/antigravity-cli/builtin/skills/agy-customizations/docs/hooks.md`.
 
@@ -83,6 +83,7 @@ Unexpected Helper execution failure and successful canonical load-diagnostic out
 - Four launch/add-order permutations among `a-added`, `m-launch`, and `z-added` always yielded that lexical path order. An interactive later-added folder also preceded the original root. A no-tool request received both mounted roots' `AGENTS.md` markers.
 - CLI `1.3.1` failure cases used exit `23`, empty stdout, malformed JSON, and a two-second timeout; each allowed a successful model answer and exit `0`. Nonzero-exit behavior repeated on `1.3.3`. A requested user-message warning was relayed once; its ephemeral equivalent was not. Neither is proof of direct notification UI.
 - Release-note fixes: `1.1.10` custom PostInvocation/Stop ordering; `1.2.3` plugin hooks in inspection; `1.2.4` hook retention under customization-budget truncation; `1.3.3` hook suppression for `/btw`.
+- A hook that dumped every environment variable with the prefixes `GEMINI_`, `ANTIGRAVITY_`, or `CLAUDE_` on each event found no `GEMINI_*` or `CLAUDE_*` variables (including `GEMINI_CWD`, `GEMINI_PROJECT_DIR`, and `CLAUDE_PROJECT_DIR`); the harness sets only `ANTIGRAVITY_CONVERSATION_ID` per invocation. Gemini-era project-directory variables cannot identify the project root.
 
 #### Sources
 

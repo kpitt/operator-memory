@@ -40,6 +40,9 @@ Repository-wide Operator product knowledge published with the project.
 - `pi/implementation.md`
   - Description: Pi binding — synthetic-message injection, commands, footer status, and native package updates.
   - Read If: Implementing or changing the Pi adapter.
+- `antigravity/implementation.md`
+  - Description: Antigravity binding — hook failure invisibility, workspace handling (no workspace, no Brain, Brain-root instruction step), plus the long-term `--user-only` Helper goal.
+  - Read If: Implementing or changing the Antigravity adapter, or deciding how it behaves with zero, one, or several workspaces.
 - `codex/implementation.md`
   - Description: Codex binding — lifecycle-hook persisted injection, the immutability exception, skills for commands, hook trust, and marketplace installation.
   - Read If: Implementing or changing the Codex adapter.
