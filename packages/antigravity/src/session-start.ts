@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   HookError,
   isSessionStartEvent,
@@ -32,8 +33,16 @@ function readEvent(): SessionStartEvent {
 function main(): void {
   const event = readEvent();
 
-  // Always put the operator memory in the first workspace path.
-  const cwd = event.workspacePaths[0];
+  const operatorPaths = [".operator", ".operator-shared"];
+
+  const cwd =
+    event.workspacePaths.length === 1
+      ? event.workspacePaths[0]
+      : event.workspacePaths.find(workspacePath =>
+          operatorPaths.some(operatorPath => existsSync(join(workspacePath, operatorPath))),
+        );
+
+  if (cwd === undefined) fail();
 
   const result = spawnSync("operator-helper", ["preamble"], {
     cwd,
