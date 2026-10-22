@@ -64,7 +64,7 @@ Indexed by subindexes under `index/harnesses/`; clone the upstream repository to
 - `docs/assets/change-the-loop.png` - README agent-loop promo graphic.
 - `LICENSE` - BSD 3-Clause repository license.
 - `.github/workflows/ci.yml` - Frozen-install workspace quality checks.
-- `.github/workflows/publish-helper.yml`, `.github/workflows/publish-opencode-v2.yml`, `.github/workflows/publish-pi.yml`, `.github/workflows/publish-codex.yml`, `.github/workflows/publish-claude-code.yml`, `.github/workflows/publish-deepseek.yml` - Independent tag-driven npm provenance publishing and GitHub releases.
+- `.github/workflows/publish-helper.yml`, `.github/workflows/publish-opencode-v2.yml`, `.github/workflows/publish-pi.yml`, `.github/workflows/publish-codex.yml`, `.github/workflows/publish-claude-code.yml`, `.github/workflows/publish-deepseek.yml`, `.github/workflows/publish-antigravity.yml` - Independent tag-driven npm provenance publishing and GitHub releases.
 - `.githooks/pre-commit` - Repository hook that reports quality checks and fixes formatting failures.
 - `.githooks/commit-msg` - Commit-message hook requiring an area for `feat` commits.
 - `scripts/check.sh` - Full-workspace or package-scoped validation runner.
