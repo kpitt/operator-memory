@@ -5,6 +5,7 @@ import { fileFailure } from "./commands/common.ts";
 import { indexInit } from "./commands/index/init.ts";
 import { indexLint } from "./commands/index/lint.ts";
 import { installClaudeCode } from "./commands/install/claude-code.ts";
+import { installAntigravity } from "./commands/install/antigravity.ts";
 import { installCodex } from "./commands/install/codex.ts";
 import { installDeepSeek } from "./commands/install/deepseek.ts";
 import { installKiro } from "./commands/install/kiro.ts";
@@ -39,6 +40,7 @@ ${renderTable([
   ["install pi", "Install or update the Pi plugin"],
   ["install claude-code", "Install or update the Claude Code plugin"],
   ["install kiro", "Install or update the Kiro adapter"],
+  ["install antigravity", "Install or update the Antigravity plugin"],
 ])}
 
 AGENT COMMANDS
@@ -113,6 +115,8 @@ export function runCli(
         return yield* installDeepSeek(context);
       case "install pi":
         return yield* installPi(context);
+      case "install antigravity":
+        return yield* installAntigravity(context);
       case "install kiro":
         return yield* installKiro(context);
       case "user guide":

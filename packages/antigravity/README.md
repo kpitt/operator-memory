@@ -6,10 +6,6 @@ Operator Memory gives Antigravity durable project and user context maintained by
 
 Requires Antigravity CLI `v1.4.0` or newer and the [Helper](https://github.com/aerovato/operator-memory#installation) installed on `PATH`.
 
-<!--
-TODO: Implement an `operator-helper install` command for Antigravity.
-TODO: Determine whether or not Antigravity supports custom marketplaces.
--->
 ```sh
 operator-helper install antigravity
 ```
