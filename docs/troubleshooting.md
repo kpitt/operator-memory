@@ -16,6 +16,7 @@ Run `operator-helper install <id>` for your harness — see the [harness docs](h
 - [Pi](harnesses/pi.md)
 - [DeepSeek Harness](harnesses/deepseek.md)
 - [Kiro](harnesses/kiro.md)
+- [Antigravity](harnesses/antigravity.md)
 
 Restart the harness after installation or repair. Until the harness reloads the adapter, setup commands and preamble injection will not behave as expected.
 

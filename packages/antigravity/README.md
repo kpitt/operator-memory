@@ -37,5 +37,4 @@ Antigravity does not tell plugins which directory a session was launched from, a
 
 Antigravity shows no hook messages or errors to the user, so Operator avoids failing wherever it can still load a valid preamble. If Operator memory seems to be missing, ask the agent whether Operator Memory guidance is available.
 
-<!-- TODO: Create the "harnesses" doc file for Antigravity -->
 See the [Antigravity guide](https://github.com/aerovato/operator-memory/blob/main/docs/harnesses/antigravity.md) for verification, updates, and troubleshooting. For local development, run `bun run install:antigravity` from the workspace root.
