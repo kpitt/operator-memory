@@ -3,7 +3,15 @@ import { file, $ as shell, write } from "bun";
 
 const root = resolve(import.meta.dirname, "..");
 const $ = shell.cwd(root);
-const packages = ["opencode-v2", "pi", "deepseek", "codex", "claude-code", "helper"] as const;
+const packages = [
+  "opencode-v2",
+  "pi",
+  "deepseek",
+  "codex",
+  "claude-code",
+  "antigravity",
+  "helper",
+] as const;
 
 export async function publishAll(bump: string | undefined): Promise<void> {
   if (bump !== "major" && bump !== "minor" && bump !== "patch") {
@@ -41,10 +49,17 @@ export async function publishAll(bump: string | undefined): Promise<void> {
   await write(pluginPath, `${JSON.stringify(plugin, null, 2)}\n`);
   await $`bun scripts/sync-codex-version.ts`;
   await $`bun install --lockfile-only --ignore-scripts`;
+  const agyPluginPath = resolve(root, "packages/antigravity/plugin.json");
+  const agyPlugin: Record<string, unknown> = await file(agyPluginPath).json();
+  const agy: { version: string } = await file(
+    resolve(root, "packages/antigravity/package.json"),
+  ).json();
+  agyPlugin.version = agy.version;
+  await write(agyPluginPath, `${JSON.stringify(agyPlugin, null, 2)}\n`);
 
   const manifests = releases.map(release => `packages/${release.directory}/package.json`);
   const title = "chore(release): publish coordinated package batch";
-  await $`git add -- bun.lock packages/claude-code/.claude-plugin/plugin.json packages/codex/.codex-plugin/plugin.json .agents/plugins/marketplace.json ${manifests}`;
+  await $`git add -- bun.lock packages/claude-code/.claude-plugin/plugin.json packages/codex/.codex-plugin/plugin.json packages/antigravity/plugin.json .agents/plugins/marketplace.json ${manifests}`;
   await $`git commit -m ${title}`;
   const head = (await $`git rev-parse HEAD`.text()).trim();
   await $`git push -u origin ${branch}`;

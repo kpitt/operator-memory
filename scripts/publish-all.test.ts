@@ -11,8 +11,10 @@ const versions: Record<string, [string, string]> = {
   deepseek: ["0.2.1", "0.3.0"],
   codex: ["0.2.1", "0.3.0"],
   "claude-code": ["0.1.0", "0.2.0"],
+  antigravity: ["0.3.1", "0.4.0"],
   helper: ["1.9.0", "1.10.0"],
 };
+const numVersions = Object.keys(versions).length;
 const calls: string[][] = [];
 const bumped = new Set<string>();
 let dirty = false;
@@ -72,7 +74,9 @@ afterEach(() => {
 test("bumps all packages in one PR commit and pushes individual same-commit tags", async () => {
   await publishAll("minor");
   expect(calls.filter(call => call[0] === "git" && call[1] === "commit")).toHaveLength(1);
-  expect(calls.filter(call => call[0] === "npm" && call[1] === "version")).toHaveLength(6);
+  expect(calls.filter(call => call[0] === "npm" && call[1] === "version")).toHaveLength(
+    numVersions,
+  );
   expect(calls.filter(call => call[0] === "bun" && call[1] === "install")).toHaveLength(1);
   expect(calls).toContainEqual([
     "gh",
@@ -95,7 +99,7 @@ test("bumps all packages in one PR commit and pushes individual same-commit tags
   const pushes = calls.filter(
     call => call[0] === "git" && call[1] === "push" && call[3]?.startsWith("refs/tags/"),
   );
-  expect(pushes).toHaveLength(6);
+  expect(pushes).toHaveLength(numVersions);
   expect(pushes.every(call => call.length === 4)).toBe(true);
   expect(pushes.at(-1)).toEqual(["git", "push", "origin", "refs/tags/helper@v1.10.0"]);
   expect(mocks.write).toHaveBeenCalledWith(
@@ -108,9 +112,14 @@ test("bumps all packages in one PR commit and pushes individual same-commit tags
   expect(
     calls.findIndex(call => call[0] === "bun" && call[1] === "scripts/sync-codex-version.ts"),
   ).toBeLessThan(calls.findIndex(call => call[0] === "git" && call[1] === "commit"));
+  expect(mocks.write).toHaveBeenCalledWith(
+    expect.stringContaining("antigravity/plugin.json"),
+    expect.stringContaining('"version": "0.4.0"'),
+  );
   expect(calls.find(call => call[0] === "git" && call[1] === "add")).toEqual(
     expect.arrayContaining([
       "packages/codex/.codex-plugin/plugin.json",
+      "packages/antigravity/plugin.json",
       ".agents/plugins/marketplace.json",
     ]),
   );
